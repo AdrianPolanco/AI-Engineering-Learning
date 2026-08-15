@@ -1,0 +1,23 @@
+[project]
+name = "02-embeddings"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "Adrian Saul Polanco Ferrer",email = "C-APolanco@banreservas.com"}
+]
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "sentence-transformers (==5.7.0)",
+    "scikit-learn (>=1.9.0,<2.0.0)",
+    "matplotlib (>=3.11.1,<4.0.0)",
+    "transformers (==4.57.6)",
+    "torch (==2.6.0)"
+]
+
+[tool.poetry]
+packages = [{include = "02_embeddings", from = "src"}]
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"

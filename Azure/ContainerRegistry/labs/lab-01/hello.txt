@@ -1,0 +1,1 @@
+Esta es una imagen dummy para practicar Azure Container Registry.

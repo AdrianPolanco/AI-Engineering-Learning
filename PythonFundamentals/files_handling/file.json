@@ -1,0 +1,14 @@
+{
+    "people": [
+        {
+            "name": "Adrian",
+            "age": 24,
+            "religion": "Atheist"
+        },
+        {
+            "name": "Yarilyn",
+            "age": 21,
+            "religion": "Evangelical Christian"
+        }
+    ]
+}

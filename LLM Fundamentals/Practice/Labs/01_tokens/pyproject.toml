@@ -1,0 +1,24 @@
+[project]
+name = "01-tokens"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "Adrian Saul Polanco Ferrer",email = "C-APolanco@banreservas.com"}
+]
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "tiktoken (>=0.13.0,<0.14.0)"
+]
+
+[tool.poetry]
+packages = [{include = "tokens", from = "src"}]
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[dependency-groups]
+dev = [
+    "pytest (>=9.1.1,<10.0.0)"
+]

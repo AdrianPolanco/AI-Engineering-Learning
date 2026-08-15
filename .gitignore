@@ -1,0 +1,169 @@
+# ==========================================
+# .NET / ASP.NET Core
+# ==========================================
+bin/
+obj/
+.vs/
+.vscode/
+*.user
+*.suo
+*.sln.docstates
+.DS_Store
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Ww][Ii][Nn]32/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+# Visual Studio cache/options
+.vs/
+.vscode/
+*.sln.iml
+
+# NuGet
+*.nupkg
+*.snupkg
+.nuget/
+
+# Entity Framework Core migrations (if using Code-First)
+Migrations/
+
+# ==========================================
+# Configuration files (LOCAL - DO NOT COMMIT)
+# ==========================================
+# Local configuration overrides
+appsettings.json
+appsettings.*.json
+!appsettings.template.json
+!appsettings.*.template.json
+
+# Logging configuration (local overrides)
+log4net.config
+!log4net.template.config
+
+# Local user secrets
+secrets.json
+
+# ==========================================
+# IDE & Editor
+# ==========================================
+.idea/
+.idea/*
+*.swp
+*.swo
+*~
+.sublime-workspace
+.sublime-project
+*.code-workspace
+
+# Rider
+.idea/
+.idea_modules/
+*.swp
+
+# Visual Studio Code
+.vscode/
+.vscode/extensions/
+.vscode/settings.json
+.devcontainer/
+
+# ==========================================
+# Operating System
+# ==========================================
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+*.lnk
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Linux
+.directory
+
+# ==========================================
+# Database & Local Data
+# ==========================================
+*.db
+*.sqlite
+*.sqlite3
+*.mdb
+*.ldf
+
+# ==========================================
+# Testing
+# ==========================================
+TestResults/
+.coverage/
+*.coverage
+*.coveragexml
+opencover.xml
+codecov.json
+coverage.json
+
+# ==========================================
+# Temporary & Build artifacts
+# ==========================================
+*.tmp
+*.temp
+*.lock.json
+node_modules/
+dist/
+.tmp/
+
+# ==========================================
+# Publish outputs
+# ==========================================
+PublishProfiles/
+*.pubxml
+*.pubxml.user
+!PublishProfiles/*.template.pubxml
+
+# ==========================================
+# Logs
+# ==========================================
+logs/
+*.log
+*.log.json
+Logs/
+
+# ==========================================
+# Certificate files (local testing)
+# ==========================================
+*.pfx
+*.p12
+*.pem
+*.key
+!*.template.pfx
+!*.template.p12
+
+# ==========================================
+# Build tools
+# ==========================================
+.paket/paket.exe
+tools/
+.fake/
+
+# ==========================================
+# Custom
+# ==========================================
+# Any local environment scripts
+*.local.sh
+*.local.bat
+.env.local
+.env.*.local
