@@ -1,0 +1,88 @@
+MENSAJERÍA ASÍNCRONA Y BACKGROUND WORKERS
+
+1. Concepto general
+
+Un sistema de mensajería permite que un productor entregue información a un consumidor mediante un intermediario o infraestructura de mensajería. Esto permite desacoplar componentes y procesar trabajo fuera del ciclo de una petición HTTP.
+
+Un background worker es un proceso que ejecuta tareas en segundo plano. Puede consumir mensajes, ejecutar trabajos programados o procesar operaciones largas.
+
+2. Cola de mensajes
+
+Una cola normalmente almacena mensajes hasta que un consumidor puede procesarlos. El productor no necesita esperar a que el trabajo termine.
+
+Ejemplo:
+
+API -> Queue -> Worker -> Database
+
+La API puede devolver una respuesta rápidamente mientras el worker realiza el procesamiento posteriormente.
+
+3. RabbitMQ
+
+RabbitMQ es un broker de mensajería que utiliza conceptos como exchanges, queues, bindings y consumers.
+
+Un productor normalmente publica mensajes hacia un exchange. El exchange utiliza reglas de routing para determinar a qué cola o colas llegará el mensaje. Los consumidores leen mensajes desde las colas.
+
+4. Acknowledgement
+
+Un consumer puede confirmar que procesó correctamente un mensaje mediante un acknowledgement.
+
+Si el proceso falla antes del acknowledgement, dependiendo de la configuración, el mensaje puede volver a estar disponible para procesamiento.
+
+Esto significa que los consumidores deberían diseñarse pensando en posibles entregas repetidas.
+
+5. At-least-once delivery
+
+Una estrategia común es garantizar que un mensaje sea procesado al menos una vez. El costo es que un mensaje puede procesarse más de una vez.
+
+Por esta razón, las operaciones importantes deberían ser idempotentes.
+
+Ejemplo:
+
+Mensaje: "Crear factura INV-100"
+
+Si el worker recibe INV-100 dos veces, no debería crear dos facturas. Puede utilizar una restricción única sobre el identificador de la factura o registrar qué mensajes ya fueron procesados.
+
+6. Dead-letter queue
+
+Una dead-letter queue, o DLQ, permite apartar mensajes que no pudieron procesarse correctamente después de determinado número de intentos.
+
+La DLQ evita que un mensaje permanentemente inválido bloquee indefinidamente el procesamiento normal.
+
+7. Retries
+
+Los reintentos son útiles ante errores temporales, como una dependencia externa momentáneamente indisponible.
+
+No todos los errores deben reintentarse. Un error de validación permanente normalmente no se arreglará repitiendo la misma operación.
+
+Un sistema puede clasificar errores en transitorios y permanentes.
+
+8. Prefetch y concurrencia
+
+Los brokers permiten controlar cuántos mensajes puede recibir un consumidor antes de confirmar su procesamiento.
+
+Un prefetch demasiado alto puede provocar acumulación de mensajes en memoria. Uno demasiado bajo puede reducir el throughput.
+
+La cantidad de workers debe considerar CPU, memoria, latencia de dependencias y capacidad de la base de datos.
+
+9. Backpressure
+
+Backpressure ocurre cuando los productores generan trabajo más rápido de lo que los consumidores pueden procesarlo.
+
+La cola puede absorber temporalmente parte de esa diferencia, pero no elimina el problema. Si la tasa de producción permanece por encima de la capacidad de consumo, la cola crecerá indefinidamente.
+
+10. Observabilidad
+
+Un sistema de workers debería medir al menos:
+
+- Cantidad de mensajes procesados.
+- Cantidad de errores.
+- Latencia de procesamiento.
+- Tamaño de las colas.
+- Cantidad de reintentos.
+- Cantidad de mensajes enviados a DLQ.
+
+Estas métricas permiten distinguir entre un worker lento, una dependencia externa caída y un aumento anormal de tráfico.
+
+11. Regla práctica
+
+Una cola no convierte mágicamente una operación difícil en una operación fácil. Solo cambia cuándo y cómo se procesa. El sistema sigue necesitando idempotencia, manejo de errores, observabilidad y límites de capacidad.
