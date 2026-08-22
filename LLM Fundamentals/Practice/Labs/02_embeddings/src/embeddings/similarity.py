@@ -1,6 +1,6 @@
 from sentence_transformers import SentenceTransformer
 from sentences.sentences import texts
-from sklearn.metrics.pairwise import cosine_similarity
+from sklearn.metrics.pairwise import cosine_similarity, euclidean_distances
 
 
 embedding_model = SentenceTransformer("BAAI/bge-m3")
@@ -13,3 +13,6 @@ similarity = cosine_similarity(embeddings)
 
 print(f'Similarity between "{subtexts[0]}" and "{subtexts[1]}"')
 print(similarity)
+
+distance = euclidean_distances(embeddings)
+print(f'The distance between "{subtexts[0]}" and "{subtexts[1]}" is: {distance}')
