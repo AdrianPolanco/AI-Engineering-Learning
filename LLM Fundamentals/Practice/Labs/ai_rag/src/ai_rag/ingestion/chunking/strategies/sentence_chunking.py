@@ -26,19 +26,16 @@ class SentenceChunkingStrategy(ChunkingStrategy):
             overlap_added = False
             for i, sentence in enumerate(sentences):
 
-                if len(buffer) == self.__config.max_sentences:
-                    overlap_added, chunk_n = self.__create_chunk(document, chunks, chunk_n, buffer)
-
-                if not overlap_added and i > 0 and i % self.__config.max_sentences == 0:
+                if not overlap_added and i > 0 and len(buffer) == 0:
                     overlap_sentences = sentences[max(0, i - self.__config.overlap_sentences):i]
                     buffer.extend(overlap_sentences)
                     overlap_added = True
 
                 if len(buffer) < self.__config.max_sentences:
                     buffer.append(sentence)
-                    continue
 
-                #overlap_pointer = i
+                if len(buffer) == self.__config.max_sentences or i == len(sentences) - 1:
+                    overlap_added, chunk_n = self.__create_chunk(document, chunks, chunk_n, buffer)
 
         return chunks
 
