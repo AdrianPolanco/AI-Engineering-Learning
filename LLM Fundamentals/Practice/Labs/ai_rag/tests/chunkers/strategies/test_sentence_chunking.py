@@ -22,7 +22,10 @@ def DUMMY_TEXT() -> str:
             The operation is completed successfully.
             """
 
-@pytest.fixture(params=[(4,2), (1,2), (2,2), (5,3)])
+def _sentences(text: str) -> list[str]:
+    return [sentence.strip() for sentence in text.split('.') if sentence.strip()]
+
+@pytest.fixture(params=[(4,2), (5,3), (3,1)])
 def sentence_chunker(request) -> SentenceChunkingStrategy:
     max_sentences, overlap = request.param
     config = SentenceChunkerConfig(max_sentences, overlap)
@@ -36,17 +39,22 @@ def test_sentence_chunking_with_single_block(DUMMY_TEXT: str, sentence_chunker: 
 
     current_config = sentence_chunker.get_config()
 
+    assert chunks
+
     for i, chunk in enumerate(chunks):
-        sentences = chunk.text.split('.')
+        sentences = _sentences(chunk.text)
 
         assert len(sentences) <= current_config.max_sentences
 
         if i > 0:
             prev_chunk = chunks[i - 1]
-            overlapped_sentences = prev_chunk.text.split('.')[-current_config.overlap_sentences]
-            initial_overlapped_sentences = sentences[:current_config.overlap_sentences+1]
+            prev_chunk_sentences = _sentences(prev_chunk.text)
+            overlapped_sentences = prev_chunk_sentences[-current_config.overlap_sentences:]
+            initial_overlapped_sentences = sentences[:current_config.overlap_sentences]
 
             assert overlapped_sentences == initial_overlapped_sentences
-            
 
-
+@pytest.mark.parametrize('max_sentences, overlap', [(1, 2), (2, 2), (0, 0), (3, -1)])
+def test_sentence_chunker_config_rejects_invalid_overlap(max_sentences: int, overlap: int):
+    with pytest.raises(ValueError):
+        SentenceChunkerConfig(max_sentences, overlap)

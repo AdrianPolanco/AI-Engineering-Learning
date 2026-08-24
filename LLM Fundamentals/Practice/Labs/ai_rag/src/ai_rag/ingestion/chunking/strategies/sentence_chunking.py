@@ -67,7 +67,7 @@ class SentenceChunkingStrategy(ChunkingStrategy):
     def set_config(self, config: RecursiveChunkerConfig | SentenceChunkerConfig):
         if type(config) is not SentenceChunkerConfig:
             raise NotImplementedError(f'This chunking strategy only accepts configs of type {SentenceChunkerConfig.__name__}')
-        super().set_config(config)
+        self.__config = config
 
     def get_config(self) -> SentenceChunkerConfig:
         return self.__config
