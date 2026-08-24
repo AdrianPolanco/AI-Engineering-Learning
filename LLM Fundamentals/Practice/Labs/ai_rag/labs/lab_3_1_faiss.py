@@ -1,5 +1,4 @@
-from ai_rag.domain.chunk_config import SentenceChunkerConfig
-from ai_rag.embeddings import EmbeddingService
+from ai_rag.domain.chunk_config import SentenceChunkerConfig 
 from ai_rag.ingestion.chunking.strategies.sentence_chunking import SentenceChunkingStrategy
 from ai_rag.ingestion.document_loader import DocumentLoader
 from ai_rag.ingestion.pre_processors.md_pre_processor import MdPreProcessor
