@@ -1,13 +1,12 @@
 from collections.abc import Iterator
 
-from ai_rag.domain.chunk import Chunk, ChunkMetadata
+from ai_rag.domain.chunk import Chunk
 from ai_rag.domain.chunk_config import RecursiveChunkerConfig, SentenceChunkerConfig
-from ai_rag.domain.pre_processed_document import PreProcessedDocument, PreProcessedDocumentMetadata
-from ai_rag.ingestion.chunking.chunking_strategy import ChunkingStrategy
+from ai_rag.domain.pre_processed_document import PreProcessedDocument
+from ai_rag.ingestion.chunking.chunking_strategy import UNSUPPORTED_CONFIG_MESSAGE, ChunkingStrategy
 
 SENTENCE_SEPARATOR = '.'
 SENTENCE_JOINER = ' '
-UNSUPPORTED_CONFIG_MESSAGE = 'This chunking strategy only accepts configs of type {config_type}'
 
 
 class SentenceChunkingStrategy(ChunkingStrategy):
@@ -17,7 +16,7 @@ class SentenceChunkingStrategy(ChunkingStrategy):
 
     def chunk(self, document: PreProcessedDocument) -> list[Chunk]:
         # La metadata del chunk es idéntica para todo el documento, por tanto se proyecta una sola vez.
-        metadata = self.__build_chunk_metadata(document.metadata)
+        metadata = self._build_chunk_metadata(document.metadata)
         document_id = document.metadata.document_id
 
         return [
@@ -56,17 +55,6 @@ class SentenceChunkingStrategy(ChunkingStrategy):
             for sentence in text.split(SENTENCE_SEPARATOR)
             if (stripped := sentence.strip())
         ]
-
-    @staticmethod
-    def __build_chunk_metadata(metadata: PreProcessedDocumentMetadata) -> ChunkMetadata:
-        return ChunkMetadata(
-            source=metadata.document_source,
-            document_type=metadata.document_type,
-            lang=metadata.document_lang,
-            version=metadata.document_version,
-            path=metadata.document_path,
-            extension=metadata.document_extension,
-        )
 
     def set_config(self, config: RecursiveChunkerConfig | SentenceChunkerConfig) -> None:
         if not isinstance(config, SentenceChunkerConfig):
