@@ -44,7 +44,10 @@
   "metadata": {
     "source": "employee-handbook.md",
     "document_type": "handbook",
-    "language": "es"
+    "language": "es",
+    "version": "1.0",
+    "path": "C:/data/employee-handbook.md",
+    "extension": "txt"
   }
 }
 ```

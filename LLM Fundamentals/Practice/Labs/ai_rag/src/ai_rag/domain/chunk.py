@@ -5,7 +5,13 @@ from pathlib import Path
 class ChunkMetadata:
     source: str
     document_type: str
-    language: str
+    lang: str
+    version: str
+    path: Path
+    
+    extension: str
+    
+    
 
 @dataclass(frozen=True)
 class Chunk:
