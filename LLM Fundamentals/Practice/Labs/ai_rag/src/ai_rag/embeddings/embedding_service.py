@@ -14,7 +14,10 @@ class EmbeddingService:
         return self.embedding_model.encode(texts, convert_to_numpy=True)
 
     def get_model_info(self) -> dict[str, int|str|None]:
-        return { 
+        return {
             'model_name': self.model_name,
-            'dimensions': self.embedding_model.get_embedding_dimension()
+            'dimensions': self.embedding_model.get_sentence_embedding_dimension()
         }
+
+    def similarity(self, a: np.ndarray, b: np.ndarray) -> float:
+        return float(np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b)))

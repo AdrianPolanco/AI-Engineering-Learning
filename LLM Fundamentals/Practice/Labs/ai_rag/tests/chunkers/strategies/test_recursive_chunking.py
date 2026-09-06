@@ -7,7 +7,8 @@ from ai_rag.domain.chunk_config import RecursiveChunkerConfig, SentenceChunkerCo
 from ai_rag.domain.document_extension import DocumentExtension
 from ai_rag.domain.pre_processed_document import DocumentBlock, PreProcessedDocument, PreProcessedDocumentMetadata
 from ai_rag.ingestion.chunking.rule_providers.extension_chunking_rule_provider import ExtensionChunkingRuleProvider
-from ai_rag.ingestion.chunking.strategies.recursive_chunking import HEADING_BODY_SEPARATOR, RecursiveChunkingStrategy
+from ai_rag.ingestion.chunking.strategies.recursive_chunking import RecursiveChunkingStrategy
+from ai_rag.ingestion.chunking.text_windowing import HEADING_BODY_SEPARATOR
 
 DUMMY_WORDS = tuple(f'word{i:03d}' for i in range(1, 61))
 DUMMY_TEXT = ' '.join(DUMMY_WORDS)

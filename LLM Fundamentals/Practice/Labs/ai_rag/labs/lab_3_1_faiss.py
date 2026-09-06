@@ -1,13 +1,15 @@
-from ai_rag.domain.chunk_config import RecursiveChunkerConfig, SentenceChunkerConfig 
+from ai_rag.domain.chunk_config import RecursiveChunkerConfig, SemanticChunkerConfig, SentenceChunkerConfig
+from ai_rag.embeddings.embedding_service import EmbeddingService
 from ai_rag.ingestion.chunking.chunking_rule_provider import ChunkingRuleProvider
 from ai_rag.ingestion.chunking.chunking_strategy import ChunkingStrategy
 from ai_rag.ingestion.chunking.rule_providers.extension_chunking_rule_provider import ExtensionChunkingRuleProvider
 from ai_rag.ingestion.chunking.strategies.recursive_chunking import RecursiveChunkingStrategy
+from ai_rag.ingestion.chunking.strategies.semantic_chunking import SemanticChunkingStrategy
 from ai_rag.ingestion.chunking.strategies.sentence_chunking import SentenceChunkingStrategy
 from ai_rag.ingestion.document_loader import DocumentLoader
 from ai_rag.ingestion.pre_processors.md_pre_processor import MdPreProcessor
 
-#embedding_service = EmbeddingService('BAAI/bge-m3')
+embedding_service = EmbeddingService('BAAI/bge-m3')
 
 #print(embedding_service.get_model_info())
 
@@ -44,3 +46,12 @@ recursive_provider = ExtensionChunkingRuleProvider()
 recursive_strategy = RecursiveChunkingStrategy(recursive_config, recursive_provider)
 recursive_chunks = recursive_strategy.chunk(md_processed_document)
 print(recursive_chunks)
+
+print('--------------------------------------------------------------------------------')
+print('-----------------------------SEMANTIC CHUNKING------------------------------------------')
+print('--------------------------------------------------------------------------------')
+
+semantic_config = SemanticChunkerConfig(max_chunk_size=1200, min_chunk_size=200, overlap_size=100)
+semantic_strategy = SemanticChunkingStrategy(semantic_config, embedding_service)
+semantic_chunks = semantic_strategy.chunk(md_processed_document)
+print(semantic_chunks)

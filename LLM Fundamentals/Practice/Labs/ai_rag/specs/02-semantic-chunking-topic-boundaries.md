@@ -1,6 +1,6 @@
 # SPEC 02 — Semantic chunking por frontera temática (reescritura)
 
-> **Status:** Draft
+> **Status:** Implemented
 > **Depends on:** SPEC 01
 > **Date:** 2026-09-05
 > **Objective:** Reescribir `SemanticChunkingStrategy` para que cada chunk sea un grupo de frases delimitado únicamente por una frontera semántica detectada, usando `max_chunk_size` solo como tope de seguridad y fusionando temas por debajo de `min_chunk_size`, en vez de trocear cada tema por tamaño de caracteres como hace hoy.
@@ -146,33 +146,33 @@ Para cada `DocumentBlock` del documento, en orden:
 
 ## Acceptance criteria
 
-- [ ] `SemanticChunkerConfig(0, 1, 0)`, `(10, 0, 0)`, `(10, 10, 0)`, `(10, 5, 10)`, `(10, 5, -1)` y
+- [x] `SemanticChunkerConfig(0, 1, 0)`, `(10, 0, 0)`, `(10, 10, 0)`, `(10, 5, 10)`, `(10, 5, -1)` y
       `(10, 5, 2, breakpoint_percentile_threshold=101)` cada uno lanza `ValueError` con la
       constante de mensaje correspondiente.
-- [ ] Para el documento de dos clusters (`FakeEmbedder`, igual que spec 01) con `max_chunk_size`
+- [x] Para el documento de dos clusters (`FakeEmbedder`, igual que spec 01) con `max_chunk_size`
       suficiente para contener cada cluster entero, `SemanticChunkingStrategy` devuelve exactamente
       2 chunks — uno por cluster — no uno por frase ni uno por palabra.
-- [ ] Cada uno de esos 2 chunks contiene todas las frases de su cluster sin partir por tamaño.
-- [ ] El segundo chunk empieza con la última frase del primer cluster (overlap puenteando la
+- [x] Cada uno de esos 2 chunks contiene todas las frases de su cluster sin partir por tamaño.
+- [x] El segundo chunk empieza con la última frase del primer cluster (overlap puenteando la
       frontera entre temas).
-- [ ] Un tema cuyas frases combinadas superan `max_chunk_size` se parte en varios chunks, cada uno
+- [x] Un tema cuyas frases combinadas superan `max_chunk_size` se parte en varios chunks, cada uno
       `<= max_chunk_size`, y los consecutivos comparten un overlap `<= overlap_size`.
-- [ ] Dos grupos crudos adyacentes cuyo contenido combinado está por debajo de `min_chunk_size` se
+- [x] Dos grupos crudos adyacentes cuyo contenido combinado está por debajo de `min_chunk_size` se
       emiten como un único chunk, no como dos.
-- [ ] Un grupo crudo diminuto al final de un bloque se funde con el tema anterior en vez de quedar
+- [x] Un grupo crudo diminuto al final de un bloque se funde con el tema anterior en vez de quedar
       como chunk propio.
-- [ ] Una frase individual más larga que `max_chunk_size` (ajustado por el prefijo) sigue
+- [x] Una frase individual más larga que `max_chunk_size` (ajustado por el prefijo) sigue
       degradando a división por palabra y luego por carácter, igual que `RecursiveChunkingStrategy`.
-- [ ] Todas las frases del bloque original aparecen, en el orden de origen, a lo largo de los
+- [x] Todas las frases del bloque original aparecen, en el orden de origen, a lo largo de los
       chunks devueltos.
-- [ ] Ningún chunk tiene texto vacío o solo espacios.
-- [ ] Chunks de un bloque con `heading_path=('Vacaciones', 'Solicitud')` empiezan con
+- [x] Ningún chunk tiene texto vacío o solo espacios.
+- [x] Chunks de un bloque con `heading_path=('Vacaciones', 'Solicitud')` empiezan con
       `'Vacaciones > Solicitud\n\n'`, degradando a sin prefijo cuando no cabe en `max_chunk_size`.
-- [ ] `SemanticChunkingStrategy.set_config(RecursiveChunkerConfig(10, 2))` y
+- [x] `SemanticChunkingStrategy.set_config(RecursiveChunkerConfig(10, 2))` y
       `set_config(SentenceChunkerConfig(4, 2))` siguen lanzando `TypeError`.
-- [ ] `labs/lab_3_1_faiss.py` ya no instancia `SemanticChunkerConfig` con valores de 5 caracteres;
+- [x] `labs/lab_3_1_faiss.py` ya no instancia `SemanticChunkerConfig` con valores de 5 caracteres;
       usa los nuevos campos con valores que no fragmentan por palabra.
-- [ ] `uv run pytest` pasa completo.
+- [x] `uv run pytest` pasa completo.
 
 ## Decisions
 
