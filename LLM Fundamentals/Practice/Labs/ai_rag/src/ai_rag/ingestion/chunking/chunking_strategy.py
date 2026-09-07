@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
 from ai_rag.domain.chunk import Chunk, ChunkMetadata
-from ai_rag.domain.chunk_config import RecursiveChunkerConfig, SentenceChunkerConfig
+from ai_rag.domain.chunk_config import RecursiveChunkerConfig, SemanticChunkerConfig, SentenceChunkerConfig
 from ai_rag.domain.pre_processed_document import PreProcessedDocument, PreProcessedDocumentMetadata
 
 UNSUPPORTED_CONFIG_MESSAGE = 'This chunking strategy only accepts configs of type {config_type}'
@@ -13,7 +13,7 @@ class ChunkingStrategy(ABC):
         pass
 
     @abstractmethod
-    def set_config(self, config: RecursiveChunkerConfig|SentenceChunkerConfig):
+    def set_config(self, config: RecursiveChunkerConfig|SentenceChunkerConfig|SemanticChunkerConfig):
         pass
 
     @staticmethod
